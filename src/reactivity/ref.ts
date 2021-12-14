@@ -5,6 +5,7 @@ class RefImpl {
   private _value: any;
   private _rawValue: any;
   deps;
+  __v_isRef = true;
 
   constructor(value) {
     this._rawValue = value;
@@ -38,4 +39,28 @@ function trackRefValue(ref) {
 
 export function ref(value) {
   return new RefImpl(value);
+}
+
+export function isRef(ref) {
+  return !!ref.__v_isRef;
+}
+
+export function unRef(ref) {
+  return isRef(ref) ? ref.value : ref;
+}
+
+export function proxyRef(ref) {
+  return new Proxy(ref, {
+    get(target, key, receiver) {
+      return unRef(Reflect.get(target, key, receiver));
+    },
+
+    set(target, key, value, receiver) {
+      if (isRef(target[key]) && !isRef(value)) {
+        return (target[key].value = value);
+      } else {
+        return Reflect.set(target, key, value, receiver);
+      }
+    },
+  });
 }

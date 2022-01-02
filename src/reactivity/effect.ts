@@ -4,7 +4,7 @@ const targetMap = new Map();
 let shouldTrack;
 let activeEffect;
 
-class ReactiveEffect {
+export class ReactiveEffect {
   scheduler: Function | undefined;
   private _fn: any;
   deps = [];

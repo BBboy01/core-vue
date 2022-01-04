@@ -1,17 +1,18 @@
+import pkg from './package.json';
 import typescript from '@rollup/plugin-typescript';
 
 export default {
-  input: './src/index.ts',
+  input: 'src/index.ts',
   output: [
     // cjs
     {
       format: 'cjs',
-      file: 'lib/guid-core-vue.cjs.js',
+      file: pkg.main,
     },
     // esm
     {
       format: 'es',
-      file: 'lib/guid-core-vue.esm.js',
+      file: pkg.module,
     },
   ],
   plugins: [typescript()],
